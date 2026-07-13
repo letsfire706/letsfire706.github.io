@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>人生財務導航 V2.2.5｜退休試算</title>
+<style>
+:root{
+  --bg:#f5f5f7; --card:rgba(255,255,255,.92); --text:#1d1d1f; --muted:#6e6e73;
+  --blue:#0071e3; --green:#1f9d55; --red:#d93025; --line:rgba(0,0,0,.08);
+  --shadow:0 24px 70px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--text);
+  background:radial-gradient(circle at 12% 0%, rgba(41,151,255,.14), transparent 28%),
+             radial-gradient(circle at 88% 8%, rgba(175,82,222,.09), transparent 30%),
+             var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang TC","Noto Sans TC","Helvetica Neue",Arial,sans-serif;
+}
+header{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(20px);background:rgba(245,245,247,.78);border-bottom:1px solid rgba(0,0,0,.05)}
+.nav{max-width:1160px;height:64px;padding:0 24px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:760;letter-spacing:-.02em}.badge{font-size:13px;color:var(--muted);background:#fff;border:1px solid var(--line);padding:7px 11px;border-radius:999px}
+main{max-width:1160px;margin:auto;padding:62px 24px 88px}
+.hero{text-align:center;max-width:860px;margin:0 auto 44px}.eyebrow{font-size:14px;font-weight:760;letter-spacing:.1em;color:var(--blue)}
+h1{font-size:clamp(44px,7vw,78px);line-height:.98;letter-spacing:-.055em;margin:16px 0 20px}.hero p{margin:0;color:var(--muted);font-size:clamp(18px,2.1vw,24px);line-height:1.55}
+.layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:stretch}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.82);border-radius:30px;box-shadow:var(--shadow);backdrop-filter:blur(22px);overflow:hidden}
+.section{padding:30px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{background:rgba(255,255,255,.72);border:1px solid rgba(0,0,0,.055);border-radius:20px;padding:16px 17px}
+.field.full{grid-column:1/-1}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}
+.input-row{display:flex;align-items:center;gap:8px}.input-row input{width:100%;border:0;outline:none;background:transparent;font-size:27px;font-weight:760;letter-spacing:-.025em;color:var(--text)}
+.input-row span{color:var(--muted);white-space:nowrap}
+.rate-area,.distribution-area{margin-top:20px}.rate-title,.distribution-title{font-size:13px;color:var(--muted);margin-bottom:10px}
+.rate-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rate-btn{border:1px solid var(--line);background:#fff;border-radius:17px;padding:14px 10px;font-size:14px;font-weight:730;color:var(--text);cursor:pointer}
+.rate-btn small{display:block;margin-top:5px;font-size:12px;font-weight:600;color:var(--muted)}.rate-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}.rate-btn.active small{color:rgba(255,255,255,.82)}
+.custom{margin-top:12px}.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{border:1px solid var(--line);background:#fff;border-radius:18px;padding:15px 16px;cursor:pointer;text-align:left;font-size:14px;font-weight:730;color:var(--text)}
+.choice small{display:block;color:var(--muted);font-weight:500;margin-top:5px;line-height:1.45}.choice.active{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,113,227,.12)}
+.notice{margin-top:18px;padding:16px 18px;border-radius:18px;background:rgba(0,113,227,.06);color:#36566f;font-size:14px;line-height:1.65}
+.results{position:sticky;top:88px;min-height:100%;background:radial-gradient(circle at 78% 10%, rgba(41,151,255,.12), transparent 32%),rgba(255,255,255,.92)}
+.hero-result{padding:34px 30px 18px}.kicker{font-size:14px;color:var(--muted);margin-bottom:9px}.big{font-size:clamp(42px,5.2vw,74px);font-weight:800;letter-spacing:-.05em;word-break:break-word}
+.caption{font-size:15px;color:var(--muted);line-height:1.6;margin-top:12px}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 30px 26px}.metric{background:rgba(255,255,255,.66);border-radius:20px;padding:18px}
+.metric .label{font-size:13px;color:var(--muted)}.metric .value{font-size:21px;font-weight:780;letter-spacing:-.03em;margin-top:7px;word-break:break-word}.metric .small{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+.goal-box{margin:0 30px 30px;padding:18px 20px;border-radius:20px;border:2px solid transparent;background:#fff}.goal-box.positive{border-color:rgba(31,157,85,.45);background:rgba(31,157,85,.07)}.goal-box.negative{border-color:rgba(217,48,37,.45);background:rgba(217,48,37,.07)}
+.goal-label{font-size:13px;color:var(--muted)}.goal-value{font-size:30px;font-weight:820;margin-top:6px;letter-spacing:-.035em}.goal-box.positive .goal-value{color:var(--green)}.goal-box.negative .goal-value{color:var(--red)}.goal-text{font-size:13px;color:var(--muted);margin-top:5px}
+.style-compare{margin:0 30px 26px;padding-top:22px;border-top:1px solid var(--line)}.style-compare-title{font-size:18px;font-weight:760}.style-compare-sub{font-size:12px;color:var(--muted);line-height:1.5;margin-top:4px}
+.style-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.style-card{border:1px solid rgba(0,0,0,.07);background:rgba(255,255,255,.78);border-radius:18px;padding:15px 14px;transition:.2s ease}.style-card.active{border-color:rgba(0,113,227,.45);box-shadow:0 10px 28px rgba(0,113,227,.12);transform:translateY(-2px)}
+.style-name{font-size:13px;font-weight:760}.style-rate{font-size:12px;color:var(--muted);margin-top:4px}.style-asset-label{margin-top:14px;font-size:11px;color:var(--muted)}.style-asset{margin-top:5px;font-size:18px;font-weight:800;letter-spacing:-.03em;line-height:1.25;word-break:break-word}.style-income{margin-top:8px;font-size:11px;color:var(--muted);line-height:1.45}
+.apple-chart{margin:0 30px 24px;padding:24px 0 4px;border-top:1px solid var(--line)}.apple-chart-header{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:8px}.apple-chart-title{font-size:18px;font-weight:760}.apple-chart-unit{font-size:12px;color:var(--muted)}
+.apple-chart-legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin:12px 0 14px;font-size:12px;color:var(--muted)}.legend-item{display:flex;align-items:center;gap:7px;font-weight:650}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.apple-chart-frame{height:340px;position:relative}.apple-chart svg{width:100%;height:100%;display:block;overflow:visible}.apple-grid line{stroke:rgba(0,0,0,.055);stroke-width:1}.apple-axis text{fill:#7b7b80;font-size:11px}
+.apple-line{fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1200;stroke-dashoffset:1200;animation:drawLine 1.2s ease forwards}.apple-area{fill:url(#appleAreaGradient);opacity:.9}.apple-point{fill:#fff;stroke:var(--blue);stroke-width:3}.apple-point-label{font-size:12px;font-weight:760;fill:#1d1d1f}
+.insight{margin:0 30px 30px;border-radius:22px;background:#111;color:#fff;padding:22px 24px}.insight-kicker{font-size:12px;color:#aeb0b6;margin-bottom:8px}.insight-main{font-size:20px;font-weight:760;line-height:1.45}.insight-sub{font-size:13px;color:#c7c7cc;line-height:1.6;margin-top:8px}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;line-height:1.7;margin-top:28px}@keyframes drawLine{to{stroke-dashoffset:0}}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.results{position:static}}
+@media(max-width:560px){main{padding:38px 14px 70px}.grid,.metric-grid,.rate-buttons,.choice-grid,.style-cards{grid-template-columns:1fr}.field.full{grid-column:auto}.section,.hero-result{padding:24px 20px}.metric-grid{padding-left:20px;padding-right:20px}.goal-box,.style-compare,.apple-chart,.insight{margin-left:20px;margin-right:20px}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">人生財務導航</div><div class="badge">新臺幣計價</div></div></header>
+<main>
+<section class="hero"><div class="eyebrow">LIFE FINANCIAL NAVIGATOR</div><h1>30 秒，<br>看見你的退休未來。</h1><p>先相信，後看見。</p></section>
+<div class="layout">
+<section class="card"><div class="section">
+<div class="grid">
+<div class="field"><label>目前年齡</label><div class="input-row"><input id="age" type="number" value="30" min="0"><span>歲</span></div></div>
+<div class="field"><label>預計退休年齡</label><div class="input-row"><input id="retireAge" type="number" value="65" min="0"><span>歲</span></div></div>
+<div class="field"><label>每月收入</label><div class="input-row"><input id="monthlyIncomeWan" type="number" value="4.0" step="0.1" min="0"><span>萬元／月</span></div></div>
+<div class="field"><label>每月投資金額</label><div class="input-row"><input id="monthlyInvestK" type="number" value="6" step="1" min="0"><span>千元／月</span></div></div>
+<div class="field full"><label>可單筆投入的本金</label><div class="input-row"><input id="principalWan" type="number" value="50.0" step="0.1" min="0"><span>萬元</span></div></div>
+<div class="field full"><label>退休後，希望每月擁有的收入</label><div class="input-row"><input id="targetIncomeWan" type="number" value="6.0" step="0.1" min="0"><span>萬元／月</span></div></div>
+</div>
+<div class="rate-area"><div class="rate-title">預期投資年化報酬率</div><div class="rate-buttons">
+<button class="rate-btn" data-rate="2.5">保守<small>2.50%</small></button>
+<button class="rate-btn" data-rate="5">穩健<small>5.00%</small></button>
+<button class="rate-btn" data-rate="7.5">成長<small>7.50%</small></button>
+<button class="rate-btn" data-rate="10">積極<small>10.00%</small></button>
+</div>
+<div class="field custom"><label>自訂年化報酬率</label><div class="input-row"><input id="returnRate" type="number" value="7.00" step="0.01" min="0"><span>%</span></div></div></div>
+<div class="distribution-area"><div class="distribution-title">退休前月配息處理方式</div><div class="choice-grid">
+<button class="choice active" data-reinvest="true">月配息再投入<small>收益持續加入本金，採複利累積。</small></button>
+<button class="choice" data-reinvest="false">月配息不再投入<small>收益領出使用，退休資產只累積本金與每月投入。</small></button>
+</div></div>
+<div class="notice" id="methodNote">目前採「月配息再投入」：退休前收益持續複利；退休後維持相同報酬率，僅領取收益、不動用本金。</div>
+</div></section>
+
+<aside class="card results">
+<div class="hero-result"><div class="kicker">預估退休資產</div><div class="big" id="futureAssets">NT$ 0</div><div class="caption" id="summary"></div></div>
+<div class="metric-grid">
+<div class="metric"><div class="label">預估每月被動收入</div><div class="value" id="passiveIncome">NT$ 0</div><div class="small">退休資產 × 年化報酬率 ÷ 12</div></div>
+<div class="metric"><div class="label">退休收入目標</div><div class="value" id="targetIncomeDisplay">NT$ 0</div><div class="small">你設定的每月退休收入</div></div>
+</div>
+<div class="goal-box" id="goalBox"><div class="goal-label">距離退休目標</div><div class="goal-value" id="goalValue">NT$ 0</div><div class="goal-text" id="goalText"></div></div>
+<div class="style-compare"><div class="style-compare-title">四種投資風格比較</div><div class="style-compare-sub">同一組條件，不同報酬率假設下的退休結果。</div><div class="style-cards" id="styleCards"></div></div>
+<div class="apple-chart"><div class="apple-chart-header"><div class="apple-chart-title">資產成長趨勢</div><div class="apple-chart-unit">單位：萬元</div></div>
+<div class="apple-chart-legend" id="chartLegend"></div>
+<div class="apple-chart-frame">
+<svg id="appleChart" viewBox="0 0 680 340" preserveAspectRatio="none">
+<g class="apple-grid" id="appleGrid"></g><g class="apple-axis" id="appleAxis"></g>
+<g id="multiLines"></g><g id="multiDots"></g><g id="multiLabels"></g>
+</svg></div></div>
+<div class="insight"><div class="insight-kicker">讓未來更靠近一點</div><div class="insight-main" id="insightMain"></div><div class="insight-sub" id="insightSub"></div></div>
+</aside>
+</div>
+<div class="footer-note">本工具僅供財務規劃教育與討論使用。報酬率為長期平均假設，不代表每年固定獲利或任何投資保證。</div>
+</main>
+<script>
+const $=id=>document.getElementById(id); let reinvest=true;
+const money=n=>"NT$ "+Math.round(Math.max(0,n)).toLocaleString("zh-TW");
+function calcFutureAssets(p,m,r,y,re){const months=Math.max(0,Math.round(y*12));if(!re)return p+m*months;const mr=r/100/12;return p*Math.pow(1+mr,months)+(mr===0?m*months:m*((Math.pow(1+mr,months)-1)/mr));}
+function buildAssetSeries(p,m,r,y,re){const pts=[],tm=Math.max(0,Math.round(y*12)),mr=r/100/12,steps=Math.max(2,Math.min(72,tm||2));for(let i=0;i<=steps;i++){const mo=Math.round(tm*i/steps);let v;if(!re)v=p+m*mo;else v=p*Math.pow(1+mr,mo)+(mr===0?m*mo:m*((Math.pow(1+mr,mo)-1)/mr));pts.push({month:mo,valueWan:v/10000});}return pts;}
+function renderStyleCards(p,m,y,selected){const styles=[["保守型",2.5,"#30d158"],["穩健型",5,"#0071e3"],["成長型",7.5,"#ff9f0a"],["積極型",10,"#ff453a"]];$("styleCards").innerHTML=styles.map(([name,rate,color])=>{const a=calcFutureAssets(p,m,rate,y,reinvest),inc=a*(rate/100)/12,active=Math.abs(rate-selected)<.001?" active":"";return `<div class="style-card${active}"><div class="style-name"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:${color}"></span>${name}</div><div class="style-rate">${rate.toFixed(2)}%</div><div class="style-asset-label">退休資產</div><div class="style-asset">${Math.round(a/10000).toLocaleString("zh-TW")} 萬</div><div class="style-income">每月被動收入<br>${Math.round(inc).toLocaleString("zh-TW")} 元</div></div>`}).join("");}
+function renderAppleChart(p,m,r,y,age,retireAge){
+  const styles=[
+    {name:"保守型",rate:2.5,color:"#30d158"},
+    {name:"穩健型",rate:5,color:"#0071e3"},
+    {name:"成長型",rate:7.5,color:"#ff9f0a"},
+    {name:"積極型",rate:10,color:"#ff453a"},
+    {name:"自訂報酬",rate:r,color:"#af52de"}
+  ];
+
+  const series=styles.map(s=>({
+    ...s,
+    data:buildAssetSeries(p,m,s.rate,y,reinvest)
+  }));
+
+  const w=680,h=340,L=62,R=26,T=28,B=40,uW=w-L-R,uH=h-T-B;
+  const maxRaw=Math.max(...series.flatMap(s=>s.data.map(x=>x.valueWan)),1);
+  const mag=Math.pow(10,Math.floor(Math.log10(maxRaw)));
+  const step=Math.max(10,Math.ceil((maxRaw/4)/mag*2)/2*mag);
+  const yMax=Math.ceil(maxRaw/step)*step;
+
+  $("appleGrid").innerHTML="";
+  $("appleAxis").innerHTML="";
+  $("multiLines").innerHTML="";
+  $("multiDots").innerHTML="";
+  $("multiLabels").innerHTML="";
+
+  for(let i=0;i<=4;i++){
+    const yy=T+uH*i/4,val=yMax*(1-i/4);
+    $("appleGrid").innerHTML+=`<line x1="${L}" y1="${yy}" x2="${w-R}" y2="${yy}"/>`;
+    $("appleAxis").innerHTML+=`<text x="${L-10}" y="${yy+5}" text-anchor="end">${Math.round(val).toLocaleString("zh-TW")}</text>`;
+  }
+
+  [age,Math.round((age+retireAge)/2),retireAge].forEach((a,i)=>{
+    const x=L+uW*i/2;
+    $("appleAxis").innerHTML+=`<text x="${x}" y="${h-10}" text-anchor="${i===0?"start":i===2?"end":"middle"}">${a}歲</text>`;
+  });
+
+  series.forEach((s,idx)=>{
+    const coords=s.data.map((q,i)=>({
+      x:L+uW*i/(s.data.length-1),
+      y:T+uH*(1-q.valueWan/yMax),
+      valueWan:q.valueWan
+    }));
+    const line=coords.map((q,i)=>`${i?"L":"M"} ${q.x.toFixed(2)} ${q.y.toFixed(2)}`).join(" ");
+    $("multiLines").innerHTML+=`<path d="${line}" fill="none" stroke="${s.color}" stroke-width="${s.name==="自訂報酬"?5:4}" stroke-linecap="round" stroke-linejoin="round" ${s.name==="自訂報酬"?'stroke-dasharray="9 7"':""}></path>`;
+    const end=coords.at(-1);
+    $("multiDots").innerHTML+=`<circle cx="${end.x}" cy="${end.y}" r="5" fill="#fff" stroke="${s.color}" stroke-width="3"></circle>`;
+    const yOffset=[-12,-2,10,20,30][idx];
+    $("multiLabels").innerHTML+=`<text x="${end.x-6}" y="${Math.max(18,Math.min(h-B-2,end.y+yOffset))}" text-anchor="end" font-size="12" font-weight="800" fill="${s.color}">${Math.round(end.valueWan).toLocaleString("zh-TW")} 萬</text>`;
+  });
+
+  $("chartLegend").innerHTML=styles.map(s=>`
+    <div class="legend-item">
+      <span class="legend-dot" style="background:${s.color}"></span>
+      <span>${s.name}（${s.rate.toFixed(2)}%）</span>
+    </div>`).join("");
+
+  const extra=calcFutureAssets(p,m+1000,r,y,reinvest)-calcFutureAssets(p,m,r,y,reinvest);
+  $("insightMain").textContent=`每月多投資 1,000 元，退休資產可增加約 ${Math.round(extra/10000).toLocaleString("zh-TW")} 萬元。`;
+  $("insightSub").textContent=`依 ${r.toFixed(2)}% 年化報酬率與 ${y} 年準備期估算。`;
+}
+function calculate(){const age=Math.round(+$("age").value||0),retireAge=Math.round(+$("retireAge").value||0),m=Math.round((+$("monthlyInvestK").value||0)*1000),p=(+$("principalWan").value||0)*10000,target=(+$("targetIncomeWan").value||0)*10000,r=+$("returnRate").value||0,y=Math.max(0,retireAge-age),assets=calcFutureAssets(p,m,r,y,reinvest),income=assets*(r/100)/12,diff=income-target;$("futureAssets").textContent=money(assets);$("passiveIncome").textContent=money(income);$("targetIncomeDisplay").textContent=money(target);$("summary").textContent=`以 ${r.toFixed(2)}% 年化報酬率及「${reinvest?"月配息再投入":"月配息不再投入"}」估算。`;renderStyleCards(p,m,y,r);renderAppleChart(p,m,r,y,age,retireAge);const box=$("goalBox");if(diff>=0){box.className="goal-box positive";$("goalValue").textContent="+ "+money(diff);$("goalText").textContent="每月已超越退休收入目標";}else{box.className="goal-box negative";$("goalValue").textContent="- "+money(Math.abs(diff));$("goalText").textContent="每月距離退休收入目標仍有缺口";}}
+document.querySelectorAll(".rate-btn").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".rate-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");$("returnRate").value=(+btn.dataset.rate).toFixed(2);calculate();}));
+$("returnRate").addEventListener("input",()=>document.querySelectorAll(".rate-btn").forEach(b=>b.classList.remove("active")));
+document.querySelectorAll(".choice").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".choice").forEach(b=>b.classList.remove("active"));btn.classList.add("active");reinvest=btn.dataset.reinvest==="true";$("methodNote").textContent=reinvest?"目前採「月配息再投入」：退休前收益持續複利；退休後維持相同報酬率，僅領取收益、不動用本金。":"目前採「月配息不再投入」：退休前收益領出，不計入退休資產；退休資產只累積單筆本金與每月投資金額。";calculate();}));
+["age","retireAge","monthlyIncomeWan","monthlyInvestK","principalWan","targetIncomeWan","returnRate"].forEach(id=>$(id).addEventListener("input",calculate));calculate();
+</script>
+</body></html>
