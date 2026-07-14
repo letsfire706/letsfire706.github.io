@@ -340,6 +340,94 @@ main{position:relative;}
   .difference-asset{font-size:12pt!important;}
 }
 
+
+
+/* ===== Cross-device stability lock V1.1 ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
+body{overflow-x:hidden;min-width:320px}
+main,.nav,.layout,.card,.section,.results,.planner-card{min-width:0}
+img,svg,canvas{max-width:100%}
+input,button{font:inherit;max-width:100%}
+.brand,.badge,.section-title,.section-desc,.big,.metric .value,.goal-value,.style-asset,.difference-amount,.difference-label,.difference-asset,.difference-income{overflow-wrap:anywhere}
+.nav{width:100%;gap:16px}
+.brand,.badge{white-space:nowrap}
+.layout>*{min-width:0}
+.grid>*{min-width:0}
+.input-row{min-width:0}
+.input-row input{min-width:0}
+.style-card,.difference-card,.metric{min-width:0}
+.apple-chart-frame{width:100%;min-width:0}
+
+/* iPad / tablet: single-column reading order, two-column cards */
+@media (max-width: 1024px){
+  main{padding:44px 22px 72px}
+  .layout{grid-template-columns:1fr!important;gap:22px;padding:0!important}
+  .results{position:static!important;top:auto!important}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rate-buttons{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .style-cards{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .difference-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .difference-amount{font-size:18px}
+  .difference-asset{font-size:clamp(22px,3vw,30px)!important}
+}
+
+/* phones */
+@media (max-width: 600px){
+  header{position:sticky}
+  .nav{height:58px;padding:0 14px;gap:10px}
+  .brand{font-size:18px!important;letter-spacing:-.02em}
+  .badge{font-size:13px!important;padding:6px 9px}
+  main{padding:30px 12px 56px!important}
+  .hero{margin-bottom:24px}
+  .hero .eyebrow{font-size:12px!important;letter-spacing:.06em}
+  h1{font-size:38px!important;line-height:1.08!important;margin:12px 0 12px!important}
+  .hero p{font-size:18px!important}
+  .layout{gap:16px!important;padding:0!important}
+  .card{border-radius:20px!important}
+  .section{padding:20px 14px!important}
+  .result-heading{padding:20px 16px 0!important}
+  .section-heading,.result-heading{align-items:flex-start;gap:10px}
+  .section-step{width:36px;height:36px;border-radius:11px}
+  .section-title{font-size:21px!important;line-height:1.25}
+  .section-desc{font-size:14px!important}
+  .grid,.rate-buttons,.choice-grid,.metric-grid,.style-cards,.difference-cards{grid-template-columns:1fr!important}
+  .grid{gap:11px}
+  .field,.field.full{grid-column:auto!important;min-height:98px!important;padding:14px 12px!important}
+  .field label{font-size:16px!important;margin-bottom:8px!important}
+  .input-row input{font-size:30px!important}
+  .input-row span{font-size:15px!important}
+  .rate-area,.distribution-area{padding:14px!important;margin-top:14px!important}
+  .rate-btn,.choice{min-height:68px!important;font-size:17px!important}
+  .notice{font-size:15px!important;padding:14px!important}
+  .hero-result{padding:22px 16px 14px!important}
+  .big{font-size:40px!important;line-height:1.1;word-break:normal}
+  .caption{font-size:15px!important}
+  .metric-grid{padding:0 16px 18px!important;gap:10px!important}
+  .metric{min-height:105px!important}
+  .goal-box,.style-compare,.apple-chart,.life-difference{margin-left:16px!important;margin-right:16px!important}
+  .goal-value{font-size:30px!important}
+  .style-card{min-height:145px!important}
+  .apple-chart-frame{height:280px!important}
+  .apple-chart-legend{font-size:12px!important;gap:8px 10px!important}
+  .life-difference{padding:24px 14px!important;border-radius:20px!important}
+  .life-difference-title{font-size:25px!important;flex-direction:column;gap:8px}
+  .difference-card{min-height:160px!important;padding:18px 12px!important}
+  .difference-amount{font-size:19px!important}
+  .difference-label{font-size:15px!important}
+  .difference-asset{font-size:31px!important}
+  .difference-income{font-size:15px!important;white-space:normal!important}
+  .difference-message{font-size:16px!important}
+  .footer-note{font-size:12px!important;padding:0 10px}
+}
+
+/* very narrow phones */
+@media (max-width: 360px){
+  .brand{font-size:16px!important}
+  .badge{font-size:12px!important;padding:5px 7px}
+  h1{font-size:34px!important}
+  .big{font-size:35px!important}
+  .difference-asset{font-size:28px!important}
+}
 </style>
 
 </head>
